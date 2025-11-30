@@ -1,3 +1,9 @@
+Blackcoffer
+Consulting Website:  https://blackcoffer.com 
+Web App Products: https://netclan.com/ | https://insights.blackcoffer.com/ | https://hirekingdom.com/ | https://workcroft.com/
+Mobile App Products: Netclan | Bwstory
+
+
 Visualization Dashboard
 Test Assignment 
 The objective of this assignment is to create a data visualization dashboard as per the instructions given below. 
@@ -53,3 +59,10 @@ Some Examples of the Dashboard
 https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-2/dashboards/analytics 
 https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-2/charts/apex-chart 
 https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-2/charts/chartjs 
+
+Where to submit it?
+To submit your solution, please fill out this google sheet and upload your article to google drive, and share the drive URL in the google sheet:  https://forms.gle/YBV6Xka5WsrPwYsB8    
+
+Timeline
+Timeline: 8 Days. The Sooner is better. 
+

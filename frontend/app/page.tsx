@@ -20,11 +20,34 @@ export default function Home() {
   const [filters, setFilters] = useState<Record<string, string | string[] | undefined>>({});
   const [records, setRecords] = useState<RecordItem[]>([]);
   const [yearSummary, setYearSummary] = useState<YearSummary[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchRecords({ ...filters, limit: 1000 }).then((r) => setRecords((r.records || []) as RecordItem[]));
-    fetchYearSummary(filters).then((r) => setYearSummary((r.data || []) as YearSummary[]));
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const [recordsRes, summaryRes] = await Promise.all([
+          fetchRecords({ ...filters, limit: 1000 }),
+          fetchYearSummary(filters)
+        ]);
+        setRecords((recordsRes.records || []) as RecordItem[]);
+        setYearSummary((summaryRes.data || []) as YearSummary[]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
   }, [filters]);
+
+  if (loading && records.length === 0 && Object.keys(filters).length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-xl font-semibold text-gray-600 animate-pulse">
+          Loading Dashboard...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
