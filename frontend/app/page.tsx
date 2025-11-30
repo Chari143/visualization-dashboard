@@ -39,15 +39,7 @@ export default function Home() {
     loadData();
   }, [filters]);
 
-  if (loading && records.length === 0 && Object.keys(filters).length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="text-xl font-semibold text-gray-600 animate-pulse">
-          Loading Dashboard...
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -69,23 +61,35 @@ export default function Home() {
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="text-lg font-semibold text-gray-900 mb-1">Intensity vs Likelihood</div>
               <div className="text-sm text-gray-600 mb-4">Bubble size represents relevance, color indicates region</div>
-              <Scatter
-                data={records.map((r) => ({
-                  intensity: r.intensity,
-                  likelihood: r.likelihood,
-                  relevance: r.relevance,
-                  region: r.region,
-                  country: r.country,
-                  city: r.city,
-                  topic: r.topic,
-                }))}
-              />
+              {loading ? (
+                <div className="h-[360px] flex items-center justify-center text-gray-500 animate-pulse">
+                  Loading Chart...
+                </div>
+              ) : (
+                <Scatter
+                  data={records.map((r) => ({
+                    intensity: r.intensity,
+                    likelihood: r.likelihood,
+                    relevance: r.relevance,
+                    region: r.region,
+                    country: r.country,
+                    city: r.city,
+                    topic: r.topic,
+                  }))}
+                />
+              )}
             </div>
 
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="text-lg font-semibold text-gray-900 mb-1">Relevance by Year</div>
               <div className="text-sm text-gray-600 mb-4">Total relevance score aggregated by year</div>
-              <Bar data={yearSummary} />
+              {loading ? (
+                <div className="h-[300px] flex items-center justify-center text-gray-500 animate-pulse">
+                  Loading Chart...
+                </div>
+              ) : (
+                <Bar data={yearSummary} />
+              )}
             </div>
           </div>
         </div>

@@ -23,10 +23,14 @@ type Props = {
 export default function Filters({ onChange }: Props) {
   const [options, setOptions] = useState<Record<string, string[]>>({});
   const [filters, setFilters] = useState<Filters>({});
+  const [loading, setLoading] = useState(true);
 
   // Load filter options from backend on mount
   useEffect(() => {
-    fetchMeta().then((data) => setOptions(data));
+    fetchMeta().then((data) => {
+      setOptions(data);
+      setLoading(false);
+    });
   }, []);
 
   // Propagate filter changes to parent
@@ -88,6 +92,10 @@ export default function Filters({ onChange }: Props) {
   };
 
   const endYearOptions = useMemo(() => (options["end_year"] || []).filter(Boolean), [options]);
+
+  if (loading) {
+    return <div className="text-sm text-gray-500 animate-pulse">Loading filters...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-4">
