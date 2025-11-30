@@ -32,6 +32,10 @@ The project is configured to use **MongoDB Atlas**.
     DATABASE_URL="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/visualization-dashboard"
     PORT=4000
     ```
+ 3.  Place the data file for seeding:
+     - Preferred path: `backend/data/jsondata.json`
+     - Fallback path: `backend/jsondata.json`
+     The seed script automatically checks both paths.
 
 ### 2. Backend Setup
 
@@ -47,6 +51,10 @@ The project is configured to use **MongoDB Atlas**.
     ```bash
     npm run seed
     ```
+     This will:
+     - Read `jsondata.json` and sanitize empty values
+     - Derive `year` field from `end_year`, `published`, or `added`
+     - Wipe existing `Record` documents and bulk insert new ones
 
 
 ### 3. Run the Application
@@ -71,8 +79,49 @@ The project is configured to use **MongoDB Atlas**.
 
 - **Backend Port**: Default is `4000`.
 - **MongoDB URL**: Defined in `backend/.env` as `DATABASE_URL`.
+ - **Frontend API Base URL**: Set `NEXT_PUBLIC_API_BASE_URL` in the frontend env to point to the backend URL (defaults to `http://localhost:4000` in development).
 
 ## Verification
 
 - **Linting**: Run `npm run lint` in both `backend` and `frontend` directories.
 - **Building**: Run `npm run build` in both `backend` and `frontend` directories.
+
+## API Endpoints
+
+- `GET /api/meta`: Returns distinct values for filters.
+- `GET /api/records`: Returns records; supports query params like `end_year`, `topic`, `region`, `limit`.
+- `GET /api/summary/year`: Returns aggregated relevance and counts by year; supports the same filters.
+
+## Production Deployment
+
+### Deploy Backend on Render
+
+- Create a new Web Service on Render and connect your repo.
+- Root Directory: `backend`
+- Build Command: `npm install && npm run build`
+- Start Command: `npm run start`
+- Environment Variables:
+  - `DATABASE_URL` = your MongoDB Atlas URI
+  - Do not set `PORT`; Render provides it automatically.
+- Seed the database against Atlas before/after deploy:
+  ```bash
+  cd backend
+  # Use the same Atlas DATABASE_URL in .env locally
+  npm run seed
+  ```
+- Verify after deploy:
+  - `https://<render-app>.onrender.com/api/meta`
+  - `https://<render-app>.onrender.com/api/records?limit=5`
+
+### Deploy Frontend on Vercel
+
+- Import the repo in Vercel and set Root Directory to `frontend`.
+- Set environment variable:
+  - `NEXT_PUBLIC_API_BASE_URL=https://<render-app>.onrender.com`
+- Trigger a deploy and verify the dashboard loads filters and charts.
+
+## Troubleshooting
+
+- Empty filters or charts: Ensure Atlas is seeded (`npm run seed`) and `DATABASE_URL` is correct.
+- Frontend calling localhost in production: Set `NEXT_PUBLIC_API_BASE_URL` on Vercel to your Render URL.
+- CORS errors: The backend enables CORS; ensure you are calling the correct public URL.
