@@ -13,7 +13,9 @@ const FILTER_KEYS = [
   "source",
   "swot",
   "country",
-  "city"
+  "city",
+  "start_year",
+  "impact"
 ] as const;
 
 

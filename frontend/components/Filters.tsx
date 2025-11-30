@@ -12,6 +12,8 @@ type Filters = {
   swot?: string[];
   country?: string[];
   city?: string[];
+  start_year?: string[];
+  impact?: string[];
 };
 
 type Props = {
@@ -124,6 +126,8 @@ export default function Filters({ onChange }: Props) {
       {renderFilterSection("swot", "SWOT")}
       {renderFilterSection("country", "Country")}
       {renderFilterSection("city", "City")}
+      {renderFilterSection("start_year", "Start Year")}
+      {renderFilterSection("impact", "Impact")}
     </div>
   );
 }
